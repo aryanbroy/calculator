@@ -22,6 +22,7 @@ numbers.forEach(number => {
 
 operators.forEach(op => {
     op.addEventListener('click', (e) => {
+        operate();
         handleOperator(e.target.textContent);
         previousScreen.textContent = `${previousValue} ${operator}`
     })
