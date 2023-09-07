@@ -1,37 +1,72 @@
-const body = document.querySelector('body');
-const input = document.querySelector('input');
-const displayable = document.querySelector('.displayable');
+const numbers = document.querySelectorAll('.number');
+const operators = document.querySelectorAll('.operator');
 const clear = document.querySelector('#clear');
+const equal = document.querySelector('#equal');
+const previousScreen = document.querySelector('.previous');
+const currentScreen = document.querySelector('.current');
 
-let num1;
-let operator;
-let num2;
 
-function add(a,b){
-    return a+b;
-}
 
-function subtract(a,b){
-    return a-b;
-}
+let previousValue = '';
+let currentValue = '';
+let operator = '';
 
-function multiply(a,b){
-    return a * b;
-}
 
-function divide(a,b){
-    return a/b;
-}
 
-// function operate(num1, num2, operator){
-
-// }
-
-displayable.addEventListener('click', (e) => {
-
-    input.value += e.target.textContent;
+numbers.forEach(number => {
+    number.addEventListener('click', (e) => {
+        handleNum(e.target.textContent)
+        currentScreen.textContent = currentValue;
+    })
 })
 
+operators.forEach(op => {
+    op.addEventListener('click', (e) => {
+        handleOperator(e.target.textContent);
+        previousScreen.textContent = `${previousValue} ${operator}`
+    })
+})
 clear.addEventListener('click', () => {
-    input.value = '';
+    previousScreen.textContent = '';
+    currentScreen.textContent = '';
+    currentValue = '';
+    previousValue = '';
+    operator = '';
+});
+
+equal.addEventListener('click', () => {
+    operate();
+    previousScreen.textContent = ''
+    currentScreen.textContent = currentValue;
 })
+
+function handleNum(num){
+    currentValue += num;
+}
+
+function handleOperator(op){
+    operator = op
+    previousValue = currentValue;
+    currentValue = '';
+}
+
+function operate(){
+    currentValue = Number(currentValue)
+    previousValue = Number(previousValue)
+    if(operator === '+'){
+        currentValue = currentValue + previousValue
+        return(currentValue)
+    }
+    if(operator === '-'){
+        currentValue = previousValue - currentValue;
+        return currentValue;
+    }
+    if(operator === 'x'){
+        currentValue = currentValue * previousValue;
+        return currentValue;
+    }
+    if(operator === '÷'){
+        currentValue = previousValue / currentValue;
+        return currentValue;
+    }
+}
